@@ -1,6 +1,6 @@
-import io, ffmpeg, re, os, requests
+import io, ffmpeg, re, os, requests, websocket, json
 import moviepy.editor as mp
-
+from contextlib import closing
 def extract_extension(title):
     title = title.split('.')
     return title[-1]
@@ -40,13 +40,34 @@ def cleanurl(url):
         print("https is recommended")
     return url
 
+def get_plain_url(url):
+    url=url.replace('http://','')
+    url=url.replace('https://','')
+    return url
+def send_commands(headers,url,commands):
+    websocket.enableTrace(False)
+    print(headers['session'])
+    ws = websocket.create_connection(
+        f'wss://{url}/proxy/daemon/socket/{serverid}', cookie = f"puffer_auth={headers['session']}",
+        header = {'Accept-Encoding':'gzip, deflate, br'}
+    )
+    for command in commands:
+        ws.send(json.dumps(command))
+    ws.close()
 def upload(audiobytes,url,filename,serverid,directory,username,password):
-    upload_file(login_to_pufferpanel(url,username,password),
-    audiobytes,
-    url,
-    filename,
-    serverid,
-    directory)
+    LoginHeaders = login_to_pufferpanel(url,username,password)
+    create_dir_structure(headers,url,serverid, directory)
+    upload_file(LoginHeaders, audiobytes, url, filename, serverid, directory)
+
+def create_dir_structure(headers,url,serverid, dir):
+    dirs = dir.split('/')
+    totaltree = ''
+    commands = []
+    for d in dirs:
+        commands.append({"type":"file","action":"create","path":f"{totaltree}{d}"})
+        totaltree += f'{d}/'
+    send_commands(headers,get_plain_url(url),serverid,commands)
+
 
 def upload_file(headers,audiobytes,url,filename,serverid,directory):
     url = f"{url}/proxy/daemon/server/{serverid}/file/{directory}/{filename}"
@@ -67,4 +88,4 @@ def login_to_pufferpanel(url,username,password):
     }
     response = requests.request("POST", url, json=payload, headers=headers)
 
-    return {"authorization": f"Bearer {response.json()['session']}","cookie": f"puffer_auth={response.json()['session']}"}
+    return {"authorization": f"Bearer {response.json()['session']}","cookie": f"puffer_auth={response.json()['session']}","session": response.json()['session']}
