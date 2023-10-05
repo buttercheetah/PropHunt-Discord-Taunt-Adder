@@ -4,7 +4,7 @@ This repository contains the source code for the Discord Prophunt Sound Manageme
 
 The application is designed to be deployed using Docker.
 
-##Getting Started
+## Getting Started
 Follow the instructions below to set up and run the application.
 
 ### Setup
