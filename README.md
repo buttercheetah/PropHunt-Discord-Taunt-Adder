@@ -24,14 +24,13 @@ Docker: Make sure you have Docker installed on your system. For installation ins
 ### Docker CLI
 ```shell
 docker run -d --restart=unless-stopped \
--p <HOST_PORT>:<CONTAINER_PORT> \
 -e PUFFERPANEL_URL=<PUFFERPANEL_URL> \
 -e DISCORD_TOKEN=<DISCORD_TOKEN> \
 -e PUFFERPANEL_USER=<PUFFERPANEL_USER> \
 -e PUFFERPANEL_PASS=<PUFFERPANEL_PASS> \
 -e SERVER_ID=<SERVER_ID> \
 -e SOUND_DIRECTORY=<SOUND_DIRECTORY> \
-your-image-name:tag
+glcr.iefi.xyz/bhghdhfh/PropHunt-Discord-Taunt-Adder:latest
 ```
 ### Usage
 !add: Initiates the process of adding sound files to PufferPanel for use in Prophunt. All attachments in the message will be added.
