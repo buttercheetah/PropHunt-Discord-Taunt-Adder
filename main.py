@@ -42,7 +42,7 @@ async def phadd(ctx):
                 audio_bytes = functions.extract_audio_to_wav(attachment_bytes, attachment.filename)
                 filename = f'{functions.extracttitle(attachment.filename)}.wav'
                 audio_file = discord.File(BytesIO(audio_bytes), filename=filename)
-                functions.upload(audio_file,PUFFERPANEL_URL,filename,SERVER_ID,SOUND_DIRECTORY,PUFFERPANEL_USER,PUFFERPANEL_PASS)
+                functions.upload(audio_bytes,PUFFERPANEL_URL,filename,SERVER_ID,SOUND_DIRECTORY,PUFFERPANEL_USER,PUFFERPANEL_PASS)
                 await ctx.send(file=audio_file)
             else:
                 await ctx.send('Unsupported file format')
