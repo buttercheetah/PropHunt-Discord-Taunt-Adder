@@ -33,7 +33,7 @@ async def phadd(ctx):
         for attachment in ctx.message.attachments:
             if functions.extract_extension(str(attachment.filename).upper()) in ['MP3','WAV','OGG']:
                 attachment_bytes = await attachment.read()
-                upload(attachment_bytes,PUFFERPANEL_URL,attachment.filename,SERVER_ID,SOUND_DIRECTORY,PUFFERPANEL_USER,PUFFERPANEL_PASS)
+                functions.upload(attachment_bytes,PUFFERPANEL_URL,attachment.filename,SERVER_ID,SOUND_DIRECTORY,PUFFERPANEL_USER,PUFFERPANEL_PASS)
                 await ctx.send(f'File: `{functions.extracttitle(attachment.filename)}` added')
             elif functions.extract_extension(str(attachment.filename).upper()) in ['OGV', 'MP4', 'MPEG', 'AVI', 'MOV' ]:
                 print(attachment.filename)
@@ -42,7 +42,7 @@ async def phadd(ctx):
                 audio_bytes = functions.extract_audio_to_wav(attachment_bytes, attachment.filename)
                 filename = f'{functions.extracttitle(attachment.filename)}.wav'
                 audio_file = discord.File(BytesIO(audio_bytes), filename=filename)
-                upload(audio_file,PUFFERPANEL_URL,filename,SERVER_ID,SOUND_DIRECTORY,PUFFERPANEL_USER,PUFFERPANEL_PASS)
+                functions.upload(audio_file,PUFFERPANEL_URL,filename,SERVER_ID,SOUND_DIRECTORY,PUFFERPANEL_USER,PUFFERPANEL_PASS)
                 await ctx.send(file=audio_file)
             else:
                 await ctx.send('Unsupported file format')
