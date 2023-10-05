@@ -33,11 +33,13 @@ async def ph(ctx,*args):
         args[0] = 'add'
     if args[0] == 'add':
         if len(args) == 1:
-            args[1] = 'Hidder'
+            playertype = '2'
+        else:
+            playertype = "1" if args[1].lower() == 'hunter' or args[1].lower() == 'seeker' else "2"
         if len(args) == 2:
-            args[2] = 'custom'
-        playertype = "1" if args[1].lower() == 'hunter' or args[1].lower() == 'seeker' else "2"
-        category = args[2].lower()
+            category = 'custom'
+        else:
+            category = args[2].lower()
         if ctx.message.attachments:
             for attachment in ctx.message.attachments:
                 if functions.extract_extension(str(attachment.filename).upper()) in ['MP3','WAV','OGG']:
@@ -56,6 +58,6 @@ async def ph(ctx,*args):
                 else:
                     await ctx.send('Unsupported file format')
         else:
-            await ctx.send('Please supply an attachment. Command syntax is `!phadd Hunter/Hider Category`')
+            await ctx.send('Please supply an attachment. Command syntax is `!ph add Hunter/Hider Category`')
 
 bot.run(DISCORD_TOKEN)
