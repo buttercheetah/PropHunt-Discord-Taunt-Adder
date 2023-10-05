@@ -1,21 +1,30 @@
-import io, ffmpeg, moviepy
-def extract_audio_to_wav(video):
-    # Open the video file in binary mode
-    with open('video.mp4', 'rb') as video_file:
+import io, ffmpeg, re, os, requests
+import moviepy.editor as mp
 
-        # Create a BytesIO object
-        audio_bytes = io.BytesIO()
+def extract_extension(title):
+    title = title.split('.')
+    return title[-1]
 
-        # Create an FFmpeg object
-        ffmpeg_object = ffmpeg.FFmpeg()
+def cleantitle(title):
+    title = title.lower()
+    title = title.replace(" ", "-")
+    title = title.encode("ascii", "ignore")
+    title = title.decode()
+    return title
 
-        # Extract the audio from the video
-        ffmpeg_object.input(video_file).output(audio_bytes, format='mp3').run()
+def extracttitle(title):
+    title = title.split('.')
+    return cleantitle(title[0])
 
-        # Get the audio bytes from the BytesIO object
-        audio_bytes.seek(0)
-        audio_bytes_data = audio_bytes.read()
+def extract_audio_to_wav(video,title):
+    tempfile = f'temp.{extract_extension(title)}'
+    with open(tempfile, 'wb') as f:
+        f.write(video)
+    clip = mp.VideoFileClip(tempfile)
+    clip.audio.write_audiofile(f"temp.wav")
+    with open('temp.wav', 'rb') as f:
+        audio = f.read()
+    os.remove(tempfile)
+    os.remove('temp.wav')
+    return audio
 
-        # Save the audio bytes to a file
-        with open('audio.mp3', 'wb') as audio_file:
-            audio_file.write(audio_bytes_data)

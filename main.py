@@ -1,41 +1,42 @@
-import discord.ext
+import discord.ext, functions, os
 from discord.ext import commands
-TOKEN = "xxxxx"
+from io import BytesIO
+TOKEN = "xxxx"
 
 bot = commands.Bot(command_prefix="!",intents=discord.Intents.all())
+
 
 @bot.event
 async def on_ready():
     print(f'{bot.user} succesfully logged in!')
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="!phadd"))
 
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
         return
-    else:
-        await message.channel.send(message)
-    if message.content == 'hello':
-        await message.channel.send(f'Hi {message.author}')
-    if message.content == 'bye':
-        await message.channel.send(f'Goodbye {message.author}')
-
+    #if message.content == 'hello':
+    #    await message.channel.send(f'Hi {message.author}')
+    #if message.content == 'bye':
+    #    await message.channel.send(f'Goodbye {message.author}')
     await bot.process_commands(message)
 
-# Start each command with the @bot.command decorater
 @bot.command()
-async def square(ctx, arg): # The name of the function is the name of the command
-    print(arg) # this is the text that follows the command
-    await ctx.send(int(arg) ** 2) # ctx.send sends text in chat
-
-@bot.command()
-async def add(message):
-    if message.attachments:
-        for attachment in message.attachments:
-            print(attachment.filename)
-            attachment_bytes = await attachment.read()
-            print(f"Received attachment of {len(attachment_bytes)} bytes")
+async def phadd(ctx):
+    if ctx.message.attachments:
+        for attachment in ctx.message.attachments:
+            if functions.extract_extension(str(attachment.filename).upper()) in ['MP3','WAV','OGG']:
+                await ctx.send(f'File: `{functions.extracttitle(attachment.filename)}` added')
+            elif functions.extract_extension(str(attachment.filename).upper()) in ['OGV', 'MP4', 'MPEG', 'AVI', 'MOV' ]:
+                print(attachment.filename)
+                attachment_bytes = await attachment.read()
+                print(f"Received attachment of {len(attachment_bytes)} bytes")
+                audio_bytes = functions.extract_audio_to_wav(attachment_bytes, attachment.filename)
+                audio_file = discord.File(BytesIO(audio_bytes), filename=f'{functions.extracttitle(attachment.filename)}.wav')
+                await ctx.send(file=audio_file)
+            else:
+                await ctx.send('Unsupported file format')
     else:
-        await message.send('Please supply an attachment')
-
+        await ctx.send('Please supply an attachment')
 
 bot.run(TOKEN)
