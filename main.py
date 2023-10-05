@@ -59,5 +59,13 @@ async def ph(ctx,*args):
                     await ctx.send('Unsupported file format')
         else:
             await ctx.send('Please supply an attachment. Command syntax is `!ph add Hunter/Hider Category`')
+    if function == 'stop':
+        headers = login_to_pufferpanel(PUFFERPANEL_URL,PUFFERPANEL_USER,PUFFERPANEL_PASS)
+        functions.send_commands(headers,functions.get_plain_url(PUFFERPANEL_URL),SERVER_ID,[{"type":"stop"}])
+    if function == 'start':
+        headers = login_to_pufferpanel(PUFFERPANEL_URL,PUFFERPANEL_USER,PUFFERPANEL_PASS)
+        functions.send_commands(headers,functions.get_plain_url(PUFFERPANEL_URL),SERVER_ID,[{"type":"start"}])
+    else:
+        await ctx.send('Available commands are `add`, `stop`, and `start`')
 
 bot.run(DISCORD_TOKEN)
