@@ -15,7 +15,7 @@ SOUND_DIRECTORY = os.environ.get('SOUND_DIRECTORY', None)
 @bot.event
 async def on_ready():
     print(f'{bot.user} succesfully logged in!')
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="!phadd"))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="!ph"))
 
 @bot.event
 async def on_message(message):
@@ -29,10 +29,7 @@ async def on_message(message):
 
 @bot.command()
 async def ph(ctx,*args):
-    if len(args) == 0:
-        function = 'add'
-    else:
-        function = args[0]
+    function = args[0]
     if function == 'add':
         if len(args) <= 1:
             playertype = '2'
@@ -61,10 +58,10 @@ async def ph(ctx,*args):
                     await ctx.send('Unsupported file format')
         else:
             await ctx.send('Please supply an attachment. Command syntax is `!ph add Hunter/Hider Category`')
-    if function == 'stop':
+    elif function == 'stop':
         headers = login_to_pufferpanel(PUFFERPANEL_URL,PUFFERPANEL_USER,PUFFERPANEL_PASS)
         functions.send_commands(headers,functions.get_plain_url(PUFFERPANEL_URL),SERVER_ID,[{"type":"stop"}])
-    if function == 'start':
+    elif function == 'start':
         headers = login_to_pufferpanel(PUFFERPANEL_URL,PUFFERPANEL_USER,PUFFERPANEL_PASS)
         functions.send_commands(headers,functions.get_plain_url(PUFFERPANEL_URL),SERVER_ID,[{"type":"start"}])
     else:
