@@ -30,13 +30,13 @@ async def on_message(message):
 @bot.command()
 async def ph(ctx,*args):
     if len(args) == 0:
-        args[0] = 'add'
-    if args[0] == 'add':
-        if len(args) == 1:
+        function = 'add'
+    if function == 'add':
+        if len(args) <= 1:
             playertype = '2'
         else:
             playertype = "1" if args[1].lower() == 'hunter' or args[1].lower() == 'seeker' else "2"
-        if len(args) == 2:
+        if len(args) <= 2:
             category = 'custom'
         else:
             category = args[2].lower()

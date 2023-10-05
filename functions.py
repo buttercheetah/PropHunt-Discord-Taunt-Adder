@@ -44,7 +44,7 @@ def get_plain_url(url):
     url=url.replace('http://','')
     url=url.replace('https://','')
     return url
-def send_commands(headers,url,commands):
+def send_commands(headers,url,serverid,commands):
     websocket.enableTrace(False)
     print(headers['session'])
     ws = websocket.create_connection(
@@ -56,7 +56,7 @@ def send_commands(headers,url,commands):
     ws.close()
 def upload(audiobytes,url,filename,serverid,directory,username,password):
     LoginHeaders = login_to_pufferpanel(url,username,password)
-    create_dir_structure(headers,url,serverid, directory)
+    create_dir_structure(LoginHeaders,url,serverid, directory)
     upload_file(LoginHeaders, audiobytes, url, filename, serverid, directory)
 
 def create_dir_structure(headers,url,serverid, dir):
