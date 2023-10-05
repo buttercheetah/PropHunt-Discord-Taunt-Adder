@@ -1,7 +1,8 @@
+import discord.ext
 from discord.ext import commands
-TOKEN = "INSERT TOKEN"
+TOKEN = "xxxxx"
 
-bot = commands.Bot(command_prefix="!")
+bot = commands.Bot(command_prefix="!",intents=discord.Intents.all())
 
 @bot.event
 async def on_ready():
@@ -11,6 +12,8 @@ async def on_ready():
 async def on_message(message):
     if message.author == bot.user:
         return
+    else:
+        await message.channel.send(message)
     if message.content == 'hello':
         await message.channel.send(f'Hi {message.author}')
     if message.content == 'bye':
@@ -25,18 +28,14 @@ async def square(ctx, arg): # The name of the function is the name of the comman
     await ctx.send(int(arg) ** 2) # ctx.send sends text in chat
 
 @bot.command()
-async def scrabblepoints(ctx, arg):
-    # Key for point values of each letter
-    score = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
-         "f": 4, "i": 1, "h": 4, "k": 5, "j": 8, "m": 3,
-         "l": 1, "o": 1, "n": 1, "q": 10, "p": 3, "s": 1,
-         "r": 1, "u": 1, "t": 1, "w": 4, "v": 4, "y": 4,
-         "x": 8, "z": 10}
-    points = 0
-    # Sum the points for each letter
-    for c in arg:
-        points += score[c]
-    await ctx.send(points)
+async def add(message):
+    if message.attachments:
+        for attachment in message.attachments:
+            print(attachment.filename)
+            attachment_bytes = await attachment.read()
+            print(f"Received attachment of {len(attachment_bytes)} bytes")
+    else:
+        await message.send('Please supply an attachment')
 
 
 bot.run(TOKEN)
