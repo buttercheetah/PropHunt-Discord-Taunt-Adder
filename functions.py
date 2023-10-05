@@ -28,3 +28,44 @@ def extract_audio_to_wav(video,title):
     os.remove('temp.wav')
     return audio
 
+def cleanurl(url):
+    if url[-1] == '/':
+        url = url[:-1]
+    match = re.match('^.*\/\/', url)
+    if match == None:
+        url = f'https://{url}'
+    elif match.string[match.end()-4] == 's':
+        pass
+    else:
+        print("https is recommended")
+    return url
+
+def upload(audiobytes,url,filename,serverid,directory,username,password):
+    upload_file(login_to_pufferpanel(url,username,password),
+    audiobytes,
+    url,
+    filename,
+    serverid,
+    directory)
+
+def upload_file(headers,audiobytes,url,filename,serverid,directory):
+    url = f"{url}/proxy/daemon/server/{serverid}/file/{directory}/{filename}"
+    payload = audiobytes
+    response = requests.request("PUT", url, data=payload, headers=headers)
+    print(response.text)
+
+def login_to_pufferpanel(url,username,password):
+    url = f"{url}/auth/login"
+    payload = {
+        "email": username,
+        "password": password
+    }
+    headers = {
+        "accept": "application/json",
+        "accept-language": "en-US,en;q=0.9",
+        "content-type": "application/json"
+    }
+    response = requests.request("POST", url, json=payload, headers=headers)
+
+    return {"authorization": f"Bearer {response.json()['session']}","cookie": f"puffer_auth={response.json()['session']}"}
+print(login_to_pufferpanel('','',''))
