@@ -30,7 +30,7 @@ docker run -d --restart=unless-stopped \
 -e PUFFERPANEL_PASS=<PUFFERPANEL_PASS> \
 -e SERVER_ID=<SERVER_ID> \
 -e SOUND_DIRECTORY=<SOUND_DIRECTORY> \
-glcr.iefi.xyz/bhghdhfh/PropHunt-Discord-Taunt-Adder:latest
+glcr.iefi.xyz/bhghdhfh/prophunt-discord-taunt-adder:latest
 ```
 ### Usage
 !add: Initiates the process of adding sound files to PufferPanel for use in Prophunt. All attachments in the message will be added.

@@ -1,3 +1,4 @@
 ffmpeg
 moviepy
 requests
+discord-ext-bot
