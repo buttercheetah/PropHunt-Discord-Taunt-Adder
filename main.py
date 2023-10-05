@@ -31,6 +31,8 @@ async def on_message(message):
 async def ph(ctx,*args):
     if len(args) == 0:
         function = 'add'
+    else:
+        function = args[0]
     if function == 'add':
         if len(args) <= 1:
             playertype = '2'
