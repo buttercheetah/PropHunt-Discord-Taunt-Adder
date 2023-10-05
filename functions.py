@@ -68,4 +68,3 @@ def login_to_pufferpanel(url,username,password):
     response = requests.request("POST", url, json=payload, headers=headers)
 
     return {"authorization": f"Bearer {response.json()['session']}","cookie": f"puffer_auth={response.json()['session']}"}
-print(login_to_pufferpanel('','',''))
