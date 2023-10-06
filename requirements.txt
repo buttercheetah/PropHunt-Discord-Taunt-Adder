@@ -3,3 +3,4 @@ moviepy
 requests
 discord-ext-bot
 websocket-client
+pydub

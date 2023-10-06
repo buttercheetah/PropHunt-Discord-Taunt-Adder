@@ -1,6 +1,8 @@
 import io, ffmpeg, re, os, requests, websocket, json
 import moviepy.editor as mp
 from contextlib import closing
+from pydub import AudioSegment
+
 def extract_extension(title):
     title = title.split('.')
     return title[-1]
@@ -29,10 +31,21 @@ def extract_audio_to_wav(video,title):
     return audio
 
 def Convert_Audio_to_Wav(audio,title):
-    tempfile = f'temp.{extract_extension(title)}'
+    ext = extract_extension(title)
+    tempfile = f'temp.{ext}'
     with open(tempfile, 'wb') as f:
         f.write(audio)
-    wav_file_path = ffmpeg.input(tempfile).output("temp.wav").run()
+    if ext.lower() == 'mp3':
+        audio = AudioSegment.from_mp3(tempfile)
+    elif ext.lower() == 'wav':
+        audio = AudioSegment.from_wav(tempfile)
+    elif ext.lower() == 'ogg':
+        audio = AudioSegment.from_ogg(tempfile)
+    elif ext.lower() == 'flv':
+        audio = AudioSegment.from_flv(tempfile)
+    elif ext.lower() == 'aac':
+        audio = AudioSegment.from_file(tempfile, 'aac')
+    wav_file_path = audio.save_as_wav("temp.wav", format="wav", bitrate="192k")
     with open('temp.wav', 'rb') as f:
         audio = f.read()
     os.remove(tempfile)
