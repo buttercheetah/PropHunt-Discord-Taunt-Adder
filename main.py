@@ -41,9 +41,10 @@ async def ph(ctx,*args):
             category = args[2].lower()
         if ctx.message.attachments:
             for attachment in ctx.message.attachments:
-                if functions.extract_extension(str(attachment.filename).upper()) in ['MP3','WAV','OGG']:
+                if functions.extract_extension(str(attachment.filename).upper()) in ['MP3','WAV','OGG','M4A']:
                     attachment_bytes = await attachment.read()
-                    functions.upload(attachment_bytes,PUFFERPANEL_URL,attachment.filename,SERVER_ID,f'{SOUND_DIRECTORY}/{playertype}/{category}',PUFFERPANEL_USER,PUFFERPANEL_PASS)
+                    filename = f'{functions.extracttitle(attachment.filename)}.wav'
+                    functions.upload(functions.Convert_Audio_to_Wav(attachment_bytes, attachment.filename),PUFFERPANEL_URL,filename,SERVER_ID,f'{SOUND_DIRECTORY}/{playertype}/{category}',PUFFERPANEL_USER,PUFFERPANEL_PASS)
                     await ctx.send(f'File: `{functions.extracttitle(attachment.filename)}` added')
                 elif functions.extract_extension(str(attachment.filename).upper()) in ['OGV', 'MP4', 'MPEG', 'AVI', 'MOV' ]:
                     print(attachment.filename)

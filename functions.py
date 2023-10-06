@@ -28,6 +28,17 @@ def extract_audio_to_wav(video,title):
     os.remove('temp.wav')
     return audio
 
+def Convert_Audio_to_Wav(audio,title):
+    tempfile = f'temp.{extract_extension(title)}'
+    with open(tempfile, 'wb') as f:
+        f.write(audio)
+    wav_file_path = ffmpeg.input(tempfile).output("temp.wav").run()
+    with open('temp.wav', 'rb') as f:
+        audio = f.read()
+    os.remove(tempfile)
+    os.remove('temp.wav')
+    return audio
+
 def cleanurl(url):
     if url[-1] == '/':
         url = url[:-1]
