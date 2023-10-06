@@ -34,7 +34,7 @@ def extract_audio_to_wav(video,title):
 def Convert_Audio_to_Wav(audio,title):
     print(f'Converting audio: {title}')
     ext = extract_extension(title)
-    tempfile = f'temp.{ext}'
+    tempfile = f'tempin.{ext}'
     with open(tempfile, 'wb') as f:
         f.write(audio)
     if ext.lower() == 'mp3':
@@ -48,11 +48,12 @@ def Convert_Audio_to_Wav(audio,title):
     elif ext.lower() == 'aac':
         audio = AudioSegment.from_file(tempfile, 'aac')
     audio = audio.set_channels(1)
-    wav_file_path = audio.export("temp.wav", format="wav")
-    with open('temp.wav', 'rb') as f:
+    outputfile = 'temp.wav'
+    wav_file_path = audio.export(outputfile, format="wav")
+    with open(outputfile, 'rb') as f:
         audio = f.read()
     os.remove(tempfile)
-    os.remove('temp.wav')
+    os.remove(outputfile)
     return audio
 
 def cleanurl(url):
