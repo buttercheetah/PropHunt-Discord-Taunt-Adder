@@ -51,6 +51,7 @@ async def ph(ctx,*args):
                     attachment_bytes = await attachment.read()
                     print(f"Received attachment of {len(attachment_bytes)} bytes")
                     audio_bytes = functions.extract_audio_to_wav(attachment_bytes, attachment.filename)
+                    audio_bytes = functions.Convert_Audio_to_Wav(attachment_bytes, attachment.filename)
                     filename = f'{functions.extracttitle(attachment.filename)}.wav'
                     audio_file = discord.File(BytesIO(audio_bytes), filename=filename)
                     functions.upload(audio_bytes,PUFFERPANEL_URL,filename,SERVER_ID,f'{SOUND_DIRECTORY}/{playertype}/{category}',PUFFERPANEL_USER,PUFFERPANEL_PASS)
