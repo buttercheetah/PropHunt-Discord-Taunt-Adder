@@ -41,24 +41,27 @@ async def ph(ctx,*args):
             category = args[2].lower()
         if ctx.message.attachments:
             for attachment in ctx.message.attachments:
-                if functions.extract_extension(str(attachment.filename).upper()) in ['MP3','WAV','OGG','AAC','FLV']:
-                    attachment_bytes = await attachment.read()
-                    filename = f'{functions.extracttitle(attachment.filename)}.wav'
-                    functions.upload(functions.Convert_Audio_to_Wav(attachment_bytes, attachment.filename),PUFFERPANEL_URL,filename,SERVER_ID,f'{SOUND_DIRECTORY}/{playertype}/{category}',PUFFERPANEL_USER,PUFFERPANEL_PASS)
-                    await ctx.send(f'File: `{functions.extracttitle(attachment.filename)}` added')
-                elif functions.extract_extension(str(attachment.filename).upper()) in ['OGV', 'MP4', 'MPEG', 'AVI', 'MOV' ]:
-                    print(attachment.filename)
-                    attachment_bytes = await attachment.read()
-                    print(f"Received attachment of {len(attachment_bytes)} bytes")
-                    audio_bytes = functions.extract_audio_to_wav(attachment_bytes, attachment.filename)
-                    audio_bytes = functions.Convert_Audio_to_Wav(attachment_bytes, attachment.filename)
-                    filename = f'{functions.extracttitle(attachment.filename)}.wav'
-                    audio_file = discord.File(BytesIO(audio_bytes), filename=filename)
-                    functions.upload(audio_bytes,PUFFERPANEL_URL,filename,SERVER_ID,f'{SOUND_DIRECTORY}/{playertype}/{category}',PUFFERPANEL_USER,PUFFERPANEL_PASS)
-                    await ctx.send(file=audio_file)
-                    await ctx.send(f'File: `{functions.extracttitle(attachment.filename)}` added')
-                else:
-                    await ctx.send('Unsupported file format')
+                try:
+                    if functions.extract_extension(str(attachment.filename).upper()) in ['MP3','WAV','OGG','AAC','FLV']:
+                        attachment_bytes = await attachment.read()
+                        filename = f'{functions.extracttitle(attachment.filename)}.wav'
+                        functions.upload(functions.Convert_Audio_to_Wav(attachment_bytes, attachment.filename),PUFFERPANEL_URL,filename,SERVER_ID,f'{SOUND_DIRECTORY}/{playertype}/{category}',PUFFERPANEL_USER,PUFFERPANEL_PASS)
+                        await ctx.send(f'File: `{functions.extracttitle(attachment.filename)}` added')
+                    elif functions.extract_extension(str(attachment.filename).upper()) in ['OGV', 'MP4', 'MPEG', 'AVI', 'MOV' ]:
+                        print(attachment.filename)
+                        attachment_bytes = await attachment.read()
+                        print(f"Received attachment of {len(attachment_bytes)} bytes")
+                        audio_bytes = functions.extract_audio_to_wav(attachment_bytes, attachment.filename)
+                        audio_bytes = functions.Convert_Audio_to_Wav(attachment_bytes, attachment.filename)
+                        filename = f'{functions.extracttitle(attachment.filename)}.wav'
+                        audio_file = discord.File(BytesIO(audio_bytes), filename=filename)
+                        functions.upload(audio_bytes,PUFFERPANEL_URL,filename,SERVER_ID,f'{SOUND_DIRECTORY}/{playertype}/{category}',PUFFERPANEL_USER,PUFFERPANEL_PASS)
+                        await ctx.send(file=audio_file)
+                        await ctx.send(f'File: `{functions.extracttitle(attachment.filename)}` added')
+                    else:
+                        await ctx.send(f'Unsupported file format: {functions.extracttitle(attachment.filename)}')
+                except:
+                    await ctx.send(f'Unrecoverable error proccesing file: {functions.extracttitle(attachment.filename)}')
         else:
             await ctx.send('Please supply an attachment. Command syntax is `!ph add Hunter/Hider Category`')
     elif function == 'stop':
