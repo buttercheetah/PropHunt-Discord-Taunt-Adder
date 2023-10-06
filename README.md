@@ -33,4 +33,4 @@ docker run -d --restart=unless-stopped \
 glcr.iefi.xyz/bhghdhfh/prophunt-discord-taunt-adder:latest
 ```
 ### Usage
-!add: Initiates the process of adding sound files to PufferPanel for use in Prophunt. All attachments in the message will be added.
+!ph add: Initiates the process of adding sound files to PufferPanel for use in Prophunt. All attachments in the message will be added.

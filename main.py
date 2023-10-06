@@ -55,6 +55,7 @@ async def ph(ctx,*args):
                     audio_file = discord.File(BytesIO(audio_bytes), filename=filename)
                     functions.upload(audio_bytes,PUFFERPANEL_URL,filename,SERVER_ID,f'{SOUND_DIRECTORY}/{playertype}/{category}',PUFFERPANEL_USER,PUFFERPANEL_PASS)
                     await ctx.send(file=audio_file)
+                    await ctx.send(f'File: `{functions.extracttitle(attachment.filename)}` added')
                 else:
                     await ctx.send('Unsupported file format')
         else:
