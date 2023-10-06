@@ -19,6 +19,7 @@ def extracttitle(title):
     return cleantitle(title[0])
 
 def extract_audio_to_wav(video,title):
+    print(f'Extracting audio: {title}')
     tempfile = f'temp.{extract_extension(title)}'
     with open(tempfile, 'wb') as f:
         f.write(video)
@@ -31,6 +32,7 @@ def extract_audio_to_wav(video,title):
     return audio
 
 def Convert_Audio_to_Wav(audio,title):
+    print(f'Converting audio: {title}')
     ext = extract_extension(title)
     tempfile = f'temp.{ext}'
     with open(tempfile, 'wb') as f:
@@ -77,6 +79,7 @@ def send_commands(headers,url,serverid,commands):
         header = {'Accept-Encoding':'gzip, deflate, br'}
     )
     for command in commands:
+        print(f'Sending command: {command}')
         ws.send(json.dumps(command))
     ws.close()
 def upload(audiobytes,url,filename,serverid,directory,username,password):
@@ -85,6 +88,7 @@ def upload(audiobytes,url,filename,serverid,directory,username,password):
     upload_file(LoginHeaders, audiobytes, url, filename, serverid, directory)
 
 def create_dir_structure(headers,url,serverid, dir):
+    print(f'Validating folder structure: {dir}')
     dirs = dir.split('/')
     totaltree = ''
     commands = []
