@@ -47,9 +47,9 @@ def Convert_Audio_to_Wav(audio,title):
         audio = AudioSegment.from_flv(tempfile)
     elif ext.lower() == 'aac':
         audio = AudioSegment.from_file(tempfile, 'aac')
-    audio = audio.split_to_mono()
+    audio = audio.set_channels(1)
     outputfile = 'temp.wav'
-    wav_file_path = audio[0].export(outputfile, format="wav")
+    wav_file_path = audio.export(outputfile, format="wav")
     with open(outputfile, 'rb') as f:
         audio = f.read()
     os.remove(tempfile)
